@@ -7,6 +7,10 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.8"
+pandas = "^1.2.5"
+rdflib = "^5.0.0"
+xlrd = "^2.0.1"
+openpyxl = "^3.0.7"
 
 [tool.poetry.dev-dependencies]
 
