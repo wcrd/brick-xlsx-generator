@@ -2165,6 +2165,11 @@ switch:hasExternalProperty a owl:AsymmetricProperty,
         owl:ObjectProperty ;
     skos:definition "The subject has some link to data on another system" .
 
+switch:hasTagCollection a owl:AsymmetricProperty,
+        owl:IrreflexiveProperty,
+        owl:ObjectProperty ;
+    skos:definition "A collection holding Tag-tag value (k-v) pairs representing free form tags on entities" .
+
 tag:Count a brick:Tag ;
     rdfs:label "Count" .
 
