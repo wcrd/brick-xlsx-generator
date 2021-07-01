@@ -65,9 +65,7 @@ def query_equipment_and_location_triples_in_namespace(namespaces):
           ?s rdf:type/rdfs:subClassOf* ?class .
           VALUES ?class { brick:Equipment brick:Location brick:System }
           FILTER (isURI(?s) && STRSTARTS(str(?s), str(?namespace) ) )
-          MINUS {
-            ?o rdf:type/rdfs:subClassOf* brick:Point
-          }
+          FILTER (?p != brick:hasPoint && ?p != brick:isPointOf)
         }
         """
 
