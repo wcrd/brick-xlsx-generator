@@ -78,6 +78,9 @@ class Graph(rdflib.Graph):
         self._namespaces['building'] = BUILDING
         self.bind('building', BUILDING)
         self._namespaces['ref'] = BUILDING  # used for relative relationship references
+        META = rdflib.Namespace("https://meta.com#") # temporary namespace to hold the metadata items that are used for tags. TODO: Update this.
+        self._namespaces['meta'] = META
+        self.bind('meta', META)
         self._building = {
             'portfolio': portfolio_name,
             'building': building_name
@@ -110,6 +113,17 @@ class Graph(rdflib.Graph):
         logger.info("Generating inverse relationships...")
         self.update(sq.generate_inverse_relationships())
 
+        # Process Extensions
+        logger.info("Processing model extensions.")
+        # SwitchTags
+        logger.info("Processing SwitchTags")
+        logger.info("Processing Equipment tags")
+        tg.process_tags(self, df_equipment, self._namespaces)
+        logger.info("Processing Location tags")
+        tg.process_tags(self, df_locations, self._namespaces)
+        logger.info("Processing Point tags")
+        tg.process_tags(self, df_points, self._namespaces)
+
         logger.info("Entities successfully added to model.")
         logger.info("Processing complete.")
 
@@ -122,6 +136,10 @@ class Graph(rdflib.Graph):
         :param export_mode: options = ["full", "building", "equipment_locations_systems"]
         :return:
         """
+        # check path is OK
+        if not os.path.exists(export_path):
+            os.mkdir(export_path)
+
         # GENERATE TIMESTAMP FOR FILENAMES
         now = datetime.now()
         timestamp_str = now.strftime("%Y%m%d_%H%M%S")

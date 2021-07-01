@@ -1,8 +1,9 @@
-import rdflib 
+import rdflib
+from rdflib.collection import Collection
 from . import helpers
 
 
-# Create rdf triples from input dataframes (locations and equipment)
+# Create rdf triples from input dataframes
 def process_df(df, namespaces:dict, multiIndexHeader:str, relationships_to_process:list):
     print(f"Processing {multiIndexHeader} relationships.")
     triples = []
@@ -16,6 +17,7 @@ def process_df(df, namespaces:dict, multiIndexHeader:str, relationships_to_proce
     # validate input df has all relationships
     relationships = helpers.validate_relationships(df[multiIndexHeader].columns, relationships_to_process)
 
+    # process data for each row
     for idx, row in df.iterrows():
 
         # set identifier name & class
@@ -30,6 +32,7 @@ def process_df(df, namespaces:dict, multiIndexHeader:str, relationships_to_proce
         else:
             triples.append((namespaces['building'][identifier], rdflib.RDF.type, namespaces['brick'][entity_class]))
 
+        # create relationships
         for relationship in relationships:
             # prepare data
         
@@ -52,4 +55,51 @@ def process_df(df, namespaces:dict, multiIndexHeader:str, relationships_to_proce
                 for item in data:
                     triples.append((namespaces['building'][identifier], namespaces[relationship.namespace][relationship.name], namespaces[relationship.datatype][helpers.format_fragment(item)]))
 
+        # create switch:tags if they exist
+
     return triples
+
+
+# this method is separate for debugging purposes for now
+def process_tags(g: rdflib.Graph, df, namespaces: dict, multiIndexHeader: str = "SwitchTags"):
+    # validate if input file has SwitchTags
+    switchTagsExist = "SwitchTags" in df.columns
+
+    if not switchTagsExist:
+        print("No Switch Tags have been provided")
+        return
+
+    # iterate rows and create tags on entities
+    for idx, row in df.iterrows():
+        # validate that row is valid
+        identifier = helpers.format_fragment(row['Brick']['identifier'])
+        entity_class = helpers.format_fragment(row['Brick']['class'])
+        if entity_class == 0: continue
+
+        # get tags
+        switchTags = row[multiIndexHeader]
+
+        # generate holding container and list of entities (nodes)
+        tag_list = rdflib.BNode()
+        nodes = []
+
+        for tagGroup, tagValue in switchTags.items():
+            # validate input exists
+            if tagGroup == 0 or tagGroup == "" or not tagGroup: continue
+            if tagValue == 0 or tagValue == "" or not tagValue: continue
+
+            # split tagValue if multiple are provided
+            tagValues = [x.strip() for x in tagValue.split("|")]
+
+            # generate individual k-v pairs
+            for tag in tagValues:
+                tagDef = rdflib.BNode()  # generate BNode per tag pair
+                nodes.append(tagDef)  # record this node in a list that will be used to generate collection
+                g.add((tagDef, namespaces["meta"]["key"], rdflib.Literal(tagGroup)))
+                g.add((tagDef, namespaces["meta"]["value"], rdflib.Literal(tag)))
+
+        # add to RDF collection and insert into model
+        Collection(g, tag_list, nodes)
+        g.add((namespaces['building'][identifier], namespaces['switch']['hasTagCollection'], tag_list))
+
+
