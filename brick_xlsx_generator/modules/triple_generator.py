@@ -7,12 +7,20 @@ from . import helpers
 def process_df(df, namespaces:dict, multiIndexHeader:str, relationships_to_process:list):
     print(f"Processing {multiIndexHeader} relationships.")
     triples = []
+
+    # validate that multi-index header has been provided
+    # validate if input file has SwitchTags
+    headerExists = multiIndexHeader in df.columns
+
+    if not headerExists:
+        print(f"No {multiIndexHeader} columns have been provided")
+        return triples
     
     # validate input df has a valid identifier column (this is used for entity definition).
     # Df must have this column
     if helpers.validate_relationships(df['Brick'].columns, [("identifier", "Literal", "")]) == []:
         print("No valid identifier column found. Aborting.")
-        return
+        return triples
 
     # validate input df has all relationships
     relationships = helpers.validate_relationships(df[multiIndexHeader].columns, relationships_to_process)
