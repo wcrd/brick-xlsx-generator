@@ -66,9 +66,14 @@ class Graph(rdflib.Graph):
         df_points = pd.read_excel(xlFile, sheet_name="points", header=[0, 1], dtype=str)
 
         # tidy dfs
+        logger.info("Clearing nulls.")
         df_locations.fillna(0, inplace=True)
         df_equipment.fillna(0, inplace=True)
         df_points.fillna(0, inplace=True)
+        logger.info("Removing non-valid chars.")
+        df_locations.replace({u'\xa0': u' '}, regex=True, inplace=True)
+        df_equipment.replace({u'\xa0': u' '}, regex=True, inplace=True)
+        df_points.replace({u'\xa0': u' '}, regex=True, inplace=True)
 
         logger.info("File load completed.")
 
@@ -179,7 +184,7 @@ class Graph(rdflib.Graph):
                 g.add(item)
 
             logger.info("Exporting graph...")
-            filename = f"{timestamp_str}_M_{self._building['portfolio']}_{self._building['building']}_noPoints.ttl"
+            filename = f"{timestamp_str}_B_{self._building['portfolio']}_{self._building['building']}_noPoints.ttl"
             g.serialize(os.path.join(export_path, filename), format='turtle')
             logger.info(f"Export complete. See file: {filename}")
         else:
