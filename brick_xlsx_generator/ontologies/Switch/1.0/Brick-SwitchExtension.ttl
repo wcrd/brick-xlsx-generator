@@ -1,10 +1,10 @@
-@prefix brick: <https://brickschema.org/schema/Brick#> .
+@prefix brick: <https://brickschema.org/schema/1.1/Brick#> .
 @prefix dcterms: <http://purl.org/dc/terms#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix switch: <https://switchautomation.com/schemas/BrickExtension/1.0#> .
-@prefix tag: <https://brickschema.org/schema/BrickTag#> .
+@prefix tag: <https://brickschema.org/schema/1.1/BrickTag#> .
 
 brick:hasUuid a owl:AsymmetricProperty,
         owl:IrreflexiveProperty,
@@ -13,7 +13,7 @@ brick:hasUuid a owl:AsymmetricProperty,
 
 <https://switchautomation.com/schemas/BrickExtension/1.0> a owl:Ontology ;
     rdfs:label "Brick-SwitchExtension" ;
-    dcterms:version "1.0.4" ;
+    dcterms:version "1.0.5" ;
     skos:definition "An extension to the Brick ontology that captures additional Equipment and Point classes, as well as providing some Switch Automation specific objects" .
 
 switch:Active_Chilled_Beam a owl:Class ;
@@ -63,6 +63,13 @@ switch:After_Hours_Mode_Enable_Status a owl:Class ;
         tag:Mode,
         tag:Status .
 
+switch:Air_Curtain a owl:Class ;
+    rdfs:label "Air Curtain" ;
+    rdfs:subClassOf brick:HVAC_Equipment ;
+    skos:definition "" ;
+    brick:hasAssociatedTag tag:Air,
+        tag:Curtain .
+
 switch:Apparent_Power_Sensor a owl:Class ;
     rdfs:label "Apparent Power Sensor" ;
     rdfs:subClassOf brick:Power_Sensor ;
@@ -90,6 +97,12 @@ switch:CDW_Isolation_Valve_Position_Command a owl:Class ;
         tag:Isolation,
         tag:Position,
         tag:Valve .
+
+switch:Calorifier a owl:Class ;
+    rdfs:label "Calorifier" ;
+    rdfs:subClassOf brick:Equipment ;
+    skos:definition "" ;
+    brick:hasAssociatedTag tag:Calorifier .
 
 switch:Chilled_Water_Bypass_Valve_Position_Sensor a owl:Class ;
     rdfs:label "Temporary point class created for a flat tree structure. Point will be nested in next model revision. Chilled Water Bypass Valve Position Sensor" ;
@@ -726,6 +739,15 @@ switch:Discharge_Air_Velocity_Sensor a owl:Class ;
         tag:Sensor,
         tag:Velocity .
 
+switch:Domestic_Cold_Water_System a owl:Class ;
+    rdfs:label "Domestic Cold Water System" ;
+    rdfs:subClassOf brick:System ;
+    skos:definition "" ;
+    brick:hasAssociatedTag tag:Cold,
+        tag:Domestic,
+        tag:System,
+        tag:Water .
+
 switch:Domestic_Hot_Water_Heater a owl:Class ;
     rdfs:label "Domestic Hot Water (DHW) Heater" ;
     rdfs:subClassOf brick:Water_Heater ;
@@ -742,6 +764,13 @@ switch:Drain_Pan_Alarm a owl:Class ;
     brick:hasAssociatedTag tag:Alarm,
         tag:Drain,
         tag:Pan .
+
+switch:EV_Charger a owl:Class ;
+    rdfs:label "EV Charger" ;
+    rdfs:subClassOf brick:Electrical_Equipment ;
+    skos:definition "Electric Vehicle charging unit" ;
+    brick:hasAssociatedTag tag:Charger,
+        tag:EV .
 
 switch:EconCycle_Mode_Status a owl:Class ;
     rdfs:label "EconCycle Mode Status" ;
@@ -841,6 +870,12 @@ switch:Entering_Air_Flow_Sensor a owl:Class ;
         tag:Entering,
         tag:Flow,
         tag:Sensor .
+
+switch:Escalator a owl:Class ;
+    rdfs:label "Escalator" ;
+    rdfs:subClassOf switch:Vertical_Transport ;
+    skos:definition "" ;
+    brick:hasAssociatedTag tag:Escalator .
 
 switch:Evaporator_Refrigerant_Differential_Pressure_Sensor a owl:Class ;
     rdfs:label "Evaporator Refrigerant Differential Pressure Sensor" ;
@@ -989,6 +1024,12 @@ switch:Filter_Differential_Pressure_Alarm a owl:Class ;
         tag:Filter,
         tag:Pressure .
 
+switch:Generator a owl:Class ;
+    rdfs:label "Generator" ;
+    rdfs:subClassOf brick:Equipment ;
+    skos:definition "" ;
+    brick:hasAssociatedTag tag:Generator .
+
 switch:Heating_Call_Count_Status a owl:Class ;
     rdfs:label "Heating Call Count Status" ;
     rdfs:subClassOf switch:Count_Status ;
@@ -1112,6 +1153,14 @@ switch:Hot_Water_Valve_Position_Sensor a owl:Class ;
         tag:Valve,
         tag:Water .
 
+switch:IAQ_Sensor_Equipment a owl:Class ;
+    rdfs:label "IAQ Sensor" ;
+    rdfs:subClassOf switch:Zone_Sensor_Equipment ;
+    skos:definition "Indoor Air Quality (IAQ) sensor array. May include temperature, humidity, TVOC, CO2, CO sensor points and more." ;
+    brick:hasAssociatedTag tag:Equipment,
+        tag:IAQ,
+        tag:Sensor .
+
 switch:Isolation_Valve_Position_Command a owl:Class ;
     rdfs:label "Temporary point class created for a flat tree structure. Point will be nested in next model revision. Isolation Valve Position Command" ;
     rdfs:subClassOf brick:Position_Command ;
@@ -1120,6 +1169,14 @@ switch:Isolation_Valve_Position_Command a owl:Class ;
         tag:Isolation,
         tag:Position,
         tag:Valve .
+
+switch:Kitchen_Exhaust_Fan a owl:Class ;
+    rdfs:label "Kitchen Exhaust Fan" ;
+    rdfs:subClassOf brick:Exhaust_Fan ;
+    skos:definition "" ;
+    brick:hasAssociatedTag tag:Exhaust,
+        tag:Fan,
+        tag:Kitchen .
 
 switch:Leaving_Chilled_Water_Flow_Setpoint a owl:Class ;
     rdfs:label "Leaving Chilled Water Flow Setpoint" ;
@@ -1196,6 +1253,12 @@ switch:Low_Zone_Air_Temperature_Alarm a owl:Class ;
         tag:Low,
         tag:Temperature,
         tag:Zone .
+
+switch:MAU a owl:Class ;
+    rdfs:label "MAU" ;
+    rdfs:subClassOf switch:DOAS ;
+    skos:definition "" ;
+    brick:hasAssociatedTag tag:MAU .
 
 switch:Makeup_Water_Velocity_Sensor a owl:Class ;
     rdfs:label "Makeup Water Velocity Sensor" ;
@@ -1320,6 +1383,13 @@ switch:Mixed_Air_Fan_Overridden_Status a owl:Class ;
         tag:Overridden,
         tag:Status .
 
+switch:Moving_Walkway a owl:Class ;
+    rdfs:label "Moving Walkway" ;
+    rdfs:subClassOf switch:Vertical_Transport ;
+    skos:definition "Horizontal or inclined moving walkway" ;
+    brick:hasAssociatedTag tag:Moving,
+        tag:Walkway .
+
 switch:Night_Setback_Command a owl:Class ;
     rdfs:label "Night Setback Command" ;
     rdfs:subClassOf brick:Command ;
@@ -1327,6 +1397,14 @@ switch:Night_Setback_Command a owl:Class ;
     brick:hasAssociatedTag tag:Command,
         tag:Night,
         tag:Setback .
+
+switch:Occupancy_Sensor_Equipment a owl:Class ;
+    rdfs:label "Occupancy Sensor" ;
+    rdfs:subClassOf switch:Zone_Sensor_Equipment ;
+    skos:definition "Senses occupancy status of a space: occupied or not occupied." ;
+    brick:hasAssociatedTag tag:Equipment,
+        tag:Occupancy,
+        tag:Sensor .
 
 switch:Occupied_Discharge_Air_Temperature_Cooling_Setpoint a owl:Class ;
     rdfs:label "Occupied Discharge Air Temperature Cooling Setpoint" ;
@@ -1497,6 +1575,14 @@ switch:Outside_Air_Wetbulb_Temperature_Sensor a owl:Class ;
         tag:Temperature,
         tag:Wetbulb .
 
+switch:Outside_Fan a owl:Class ;
+    rdfs:label "Outside Fan" ;
+    rdfs:subClassOf brick:Fan ;
+    owl:equivalentClass brick:Fresh_Air_Fan ;
+    skos:definition "" ;
+    brick:hasAssociatedTag tag:Fan,
+        tag:Outside .
+
 switch:Passive_Chilled_Beam a owl:Class ;
     rdfs:label "Passive Chilled Beam" ;
     rdfs:subClassOf switch:Chilled_Beam ;
@@ -1537,6 +1623,22 @@ switch:Primary_Side_Leaving_Water_Temperature_Sensor a owl:Class ;
         tag:Sensor,
         tag:Side,
         tag:Temperature,
+        tag:Water .
+
+switch:Radon_Level_Sensor a owl:Class ;
+    rdfs:label "Radon Level Sensor" ;
+    rdfs:subClassOf switch:Radon_Sensor ;
+    skos:definition "" ;
+    brick:hasAssociatedTag tag:Level,
+        tag:Radon,
+        tag:Sensor .
+
+switch:Rain_Water_System a owl:Class ;
+    rdfs:label "Rain Water System" ;
+    rdfs:subClassOf brick:System ;
+    skos:definition "" ;
+    brick:hasAssociatedTag tag:Rain,
+        tag:System,
         tag:Water .
 
 switch:Reheat_HHW_Valve_Position_Sensor a owl:Class ;
@@ -1626,6 +1728,13 @@ switch:Secondary_Side_Leaving_Water_Temperature_Sensor a owl:Class ;
         tag:Temperature,
         tag:Water .
 
+switch:Sewerage_System a owl:Class ;
+    rdfs:label "Sewerage System" ;
+    rdfs:subClassOf brick:System ;
+    skos:definition "" ;
+    brick:hasAssociatedTag tag:Sewerage,
+        tag:System .
+
 switch:Shunt_Trip_Status a owl:Class ;
     rdfs:label "Shunt Trip Status" ;
     rdfs:subClassOf brick:Emergency_Power_Off_System_Status ;
@@ -1633,6 +1742,14 @@ switch:Shunt_Trip_Status a owl:Class ;
     brick:hasAssociatedTag tag:Shunt,
         tag:Status,
         tag:Trip .
+
+switch:Smoke_Exhaust_Fan a owl:Class ;
+    rdfs:label "Smoke Exhaust Fan" ;
+    rdfs:subClassOf brick:Exhaust_Fan ;
+    skos:definition "" ;
+    brick:hasAssociatedTag tag:Exhaust,
+        tag:Fan,
+        tag:Smoke .
 
 switch:Staging_Valve_Position_Sensor a owl:Class ;
     rdfs:label "Temporary point class created for a flat tree structure. Point will be nested in next model revision. Staging Valve Position Sensor" ;
@@ -1643,12 +1760,34 @@ switch:Staging_Valve_Position_Sensor a owl:Class ;
         tag:Staging,
         tag:Valve .
 
+switch:Stair_Pressurization_Fan a owl:Class ;
+    rdfs:label "Stair Pressurization Fan" ;
+    rdfs:subClassOf brick:Fan ;
+    skos:definition "" ;
+    brick:hasAssociatedTag tag:Fan,
+        tag:Pressurization,
+        tag:Stair .
+
 switch:Sweeper_Valve a owl:Class ;
     rdfs:label "Sweeper Valve" ;
     rdfs:subClassOf brick:Water_Valve ;
     skos:definition "Valve found in Cooling Towers that controls water for basin cleaning" ;
     brick:hasAssociatedTag tag:Sweeper,
         tag:Valve .
+
+switch:Toilet_Exhaust_Fan a owl:Class ;
+    rdfs:label "Toilet Exhaust Fan" ;
+    rdfs:subClassOf brick:Exhaust_Fan ;
+    skos:definition "" ;
+    brick:hasAssociatedTag tag:Exhaust,
+        tag:Fan,
+        tag:Toilet .
+
+switch:UPS a owl:Class ;
+    rdfs:label "UPS" ;
+    rdfs:subClassOf brick:Electrical_Equipment ;
+    skos:definition "Uninteruptible Power Supply" ;
+    brick:hasAssociatedTag tag:UPS .
 
 switch:Unoccupied_Zone_Air_Temperature_Cooling_Setpoint a owl:Class ;
     rdfs:label "Unoccupied Zone Air Temperature Cooling Setpoint" ;
@@ -1750,6 +1889,12 @@ switch:VFD_Speed_Setpoint a owl:Class ;
         tag:Speed,
         tag:VFD .
 
+switch:VSD a owl:Class ;
+    rdfs:label "VSD" ;
+    rdfs:subClassOf brick:Motor ;
+    skos:definition "Variable Speed Drive" ;
+    brick:hasAssociatedTag tag:VSD .
+
 switch:Valve_Position_Status a owl:Class ;
     rdfs:label "Temporary point class created for a flat tree structure. Point will be nested in next model revision. Valve Position Status" ;
     rdfs:subClassOf brick:Status ;
@@ -1773,6 +1918,14 @@ switch:Vapour_Refrigerant a owl:Class ;
     skos:definition "" ;
     brick:hasAssociatedTag tag:Refrigerant,
         tag:Vapour .
+
+switch:Virus_Level_Sensor a owl:Class ;
+    rdfs:label "Temporary point class created for a flat tree structure. Point will be nested in next model revision. Virus Level Sensor" ;
+    rdfs:subClassOf switch:Virus_Sensor ;
+    skos:definition "" ;
+    brick:hasAssociatedTag tag:Level,
+        tag:Sensor,
+        tag:Virus .
 
 switch:Voltage_Phase_AB_Sensor a owl:Class ;
     rdfs:label "Voltage Phase AB Sensor" ;
@@ -1818,12 +1971,6 @@ switch:Voltage_Phase_CN_Sensor a owl:Class ;
         tag:Phase,
         tag:Sensor,
         tag:Voltage .
-
-switch:WPU a owl:Class ;
-    rdfs:label "Water Packaged Unit" ;
-    rdfs:subClassOf switch:ACU ;
-    skos:definition "In-zone equipment that has a compressor and moves heat to a condenser water loop." ;
-    brick:hasAssociatedTag tag:WPU .
 
 switch:Zone_Air_CO2_Sensor a owl:Class ;
     rdfs:label "Zone Air CO2 Sensor" ;
@@ -1886,6 +2033,16 @@ switch:hasArchilogicId a owl:AsymmetricProperty,
     rdfs:subClassOf switch:hasExternalProperty ;
     skos:definition "The subject has linked data on Archilogic system at given id" .
 
+switch:hasObjectPropertyId a owl:AsymmetricProperty,
+        owl:IrreflexiveProperty,
+        owl:ObjectProperty ;
+    skos:definition "A unique identifier associated with this entity on the Switch Automation TS database" .
+
+switch:hasTagCollection a owl:AsymmetricProperty,
+        owl:IrreflexiveProperty,
+        owl:ObjectProperty ;
+    skos:definition "A collection holding Tag-tag value (k-v) pairs representing free form tags on entities" .
+
 tag:AB a brick:Tag ;
     rdfs:label "AB" .
 
@@ -1919,23 +2076,50 @@ tag:CDW a brick:Tag ;
 tag:CN a brick:Tag ;
     rdfs:label "CN" .
 
+tag:Calorifier a brick:Tag ;
+    rdfs:label "Calorifier" .
+
+tag:Charger a brick:Tag ;
+    rdfs:label "Charger" .
+
 tag:Communication a brick:Tag ;
     rdfs:label "Communication" .
+
+tag:Curtain a brick:Tag ;
+    rdfs:label "Curtain" .
+
+tag:DOAS a brick:Tag ;
+    rdfs:label "DOAS" .
 
 tag:Delivered a brick:Tag ;
     rdfs:label "Delivered" .
 
-tag:Domestic a brick:Tag ;
-    rdfs:label "Domestic" .
-
 tag:Drain a brick:Tag ;
     rdfs:label "Drain" .
+
+tag:EV a brick:Tag ;
+    rdfs:label "EV" .
+
+tag:Economizer a brick:Tag ;
+    rdfs:label "Economizer" .
 
 tag:Emergency a brick:Tag ;
     rdfs:label "Emergency" .
 
+tag:Energy a brick:Tag ;
+    rdfs:label "Energy" .
+
+tag:Escalator a brick:Tag ;
+    rdfs:label "Escalator" .
+
 tag:Factor a brick:Tag ;
     rdfs:label "Factor" .
+
+tag:Generator a brick:Tag ;
+    rdfs:label "Generator" .
+
+tag:Grey a brick:Tag ;
+    rdfs:label "Grey" .
 
 tag:HHW a brick:Tag ;
     rdfs:label "HHW" .
@@ -1943,14 +2127,32 @@ tag:HHW a brick:Tag ;
 tag:Hours a brick:Tag ;
     rdfs:label "Hours" .
 
+tag:IAQ a brick:Tag ;
+    rdfs:label "IAQ" .
+
+tag:Kitchen a brick:Tag ;
+    rdfs:label "Kitchen" .
+
+tag:Liquid a brick:Tag ;
+    rdfs:label "Liquid" .
+
 tag:Lockout a brick:Tag ;
     rdfs:label "Lockout" .
+
+tag:MAU a brick:Tag ;
+    rdfs:label "MAU" .
 
 tag:Makeup a brick:Tag ;
     rdfs:label "Makeup" .
 
+tag:Moving a brick:Tag ;
+    rdfs:label "Moving" .
+
 tag:Night a brick:Tag ;
     rdfs:label "Night" .
+
+tag:Occupancy a brick:Tag ;
+    rdfs:label "Occupancy" .
 
 tag:Open a brick:Tag ;
     rdfs:label "Open" .
@@ -1964,11 +2166,23 @@ tag:Pan a brick:Tag ;
 tag:Passive a brick:Tag ;
     rdfs:label "Passive" .
 
+tag:Point a brick:Tag ;
+    rdfs:label "Point" .
+
 tag:Preheating a brick:Tag ;
     rdfs:label "Preheating" .
 
+tag:Pressurization a brick:Tag ;
+    rdfs:label "Pressurization" .
+
 tag:Primary a brick:Tag ;
     rdfs:label "Primary" .
+
+tag:Rain a brick:Tag ;
+    rdfs:label "Rain" .
+
+tag:Recycled a brick:Tag ;
+    rdfs:label "Recycled" .
 
 tag:Reheat a brick:Tag ;
     rdfs:label "Reheat" .
@@ -1979,11 +2193,23 @@ tag:Saturation a brick:Tag ;
 tag:Setback a brick:Tag ;
     rdfs:label "Setback" .
 
+tag:Sewerage a brick:Tag ;
+    rdfs:label "Sewerage" .
+
 tag:Shunt a brick:Tag ;
     rdfs:label "Shunt" .
 
+tag:Smoke a brick:Tag ;
+    rdfs:label "Smoke" .
+
+tag:Source a brick:Tag ;
+    rdfs:label "Source" .
+
 tag:Staging a brick:Tag ;
     rdfs:label "Staging" .
+
+tag:Stair a brick:Tag ;
+    rdfs:label "Stair" .
 
 tag:Start a brick:Tag ;
     rdfs:label "Start" .
@@ -1994,8 +2220,17 @@ tag:Sweeper a brick:Tag ;
 tag:TVOC a brick:Tag ;
     rdfs:label "TVOC" .
 
+tag:Time a brick:Tag ;
+    rdfs:label "Time" .
+
+tag:Toilet a brick:Tag ;
+    rdfs:label "Toilet" .
+
 tag:Tower a brick:Tag ;
     rdfs:label "Tower" .
+
+tag:Transport a brick:Tag ;
+    rdfs:label "Transport" .
 
 tag:Trip a brick:Tag ;
     rdfs:label "Trip" .
@@ -2003,8 +2238,14 @@ tag:Trip a brick:Tag ;
 tag:Triple a brick:Tag ;
     rdfs:label "Triple" .
 
+tag:UPS a brick:Tag ;
+    rdfs:label "UPS" .
+
 tag:Unit a brick:Tag ;
     rdfs:label "Unit" .
+
+tag:VSD a brick:Tag ;
+    rdfs:label "VSD" .
 
 tag:Vaporiser a brick:Tag ;
     rdfs:label "Vaporiser" .
@@ -2012,8 +2253,14 @@ tag:Vaporiser a brick:Tag ;
 tag:Vapour a brick:Tag ;
     rdfs:label "Vapour" .
 
+tag:Vertical a brick:Tag ;
+    rdfs:label "Vertical" .
+
 tag:WPU a brick:Tag ;
     rdfs:label "WPU" .
+
+tag:Walkway a brick:Tag ;
+    rdfs:label "Walkway" .
 
 tag:Wetbulb a brick:Tag ;
     rdfs:label "Wetbulb" .
@@ -2032,6 +2279,21 @@ switch:Cold_Plate_Temperature_Sensor a owl:Class ;
         tag:Plate,
         tag:Sensor,
         tag:Temperature .
+
+switch:DOAS a owl:Class ;
+    rdfs:label "DOAS" ;
+    rdfs:subClassOf brick:AHU ;
+    skos:definition "Dedicated Outside Air System" ;
+    brick:hasAssociatedTag tag:DOAS .
+
+switch:Grey_Water_System a owl:Class ;
+    rdfs:label "Grey Water System" ;
+    rdfs:subClassOf brick:System ;
+    owl:equivalentClass switch:Recycled_Water_System ;
+    skos:definition "" ;
+    brick:hasAssociatedTag tag:Grey,
+        tag:System,
+        tag:Water .
 
 switch:Induction_Beam a owl:Class ;
     rdfs:label "Induction Beam" ;
@@ -2057,6 +2319,22 @@ switch:Min_Speed_Setpoint a owl:Class ;
         tag:Setpoint,
         tag:Speed .
 
+switch:Radon_Sensor a owl:Class ;
+    rdfs:label "Radon Sensor" ;
+    rdfs:subClassOf brick:Particulate_Matter_Sensor ;
+    skos:definition "" ;
+    brick:hasAssociatedTag tag:Radon,
+        tag:Sensor .
+
+switch:Recycled_Water_System a owl:Class ;
+    rdfs:label "Recycled Water System" ;
+    rdfs:subClassOf brick:System ;
+    owl:equivalentClass switch:Grey_Water_System ;
+    skos:definition "" ;
+    brick:hasAssociatedTag tag:Recycled,
+        tag:System,
+        tag:Water .
+
 switch:Refrigerant_Leaving_Temperature_Sensor a owl:Class ;
     rdfs:label "Refrigerant Leaving Temperature Sensor" ;
     rdfs:subClassOf brick:Temperature_Sensor ;
@@ -2073,12 +2351,39 @@ switch:Speed_Command a owl:Class ;
     brick:hasAssociatedTag tag:Command,
         tag:Speed .
 
+switch:Virus_Sensor a owl:Class ;
+    rdfs:label "Temporary point class created for a flat tree structure. Point will be nested in next model revision. Virus Sensor" ;
+    rdfs:subClassOf brick:Particulate_Matter_Sensor ;
+    skos:definition "" ;
+    brick:hasAssociatedTag tag:Sensor,
+        tag:Virus .
+
+switch:WPU a owl:Class ;
+    rdfs:label "WPU",
+        "Water Packaged Unit" ;
+    rdfs:subClassOf switch:ACU,
+        switch:Heat_Pump ;
+    owl:equivalentClass switch:Water_Source_Heat_Pump ;
+    skos:definition "",
+        "In-zone equipment that has a compressor and moves heat to a condenser water loop." ;
+    brick:hasAssociatedTag tag:WPU .
+
 switch:Water_Flow_Setpoint a owl:Class ;
     rdfs:label "Water Flow Setpoint" ;
     rdfs:subClassOf brick:Flow_Setpoint ;
     skos:definition "" ;
     brick:hasAssociatedTag tag:Flow,
         tag:Setpoint,
+        tag:Water .
+
+switch:Water_Source_Heat_Pump a owl:Class ;
+    rdfs:label "Water Source Heat Pump" ;
+    rdfs:subClassOf switch:Heat_Pump ;
+    owl:equivalentClass switch:WPU ;
+    skos:definition "" ;
+    brick:hasAssociatedTag tag:Heat,
+        tag:Pump,
+        tag:Source,
         tag:Water .
 
 tag:A a brick:Tag ;
@@ -2090,11 +2395,17 @@ tag:Adjust a brick:Tag ;
 tag:B a brick:Tag ;
     rdfs:label "B" .
 
-tag:Cold a brick:Tag ;
-    rdfs:label "Cold" .
+tag:Domestic a brick:Tag ;
+    rdfs:label "Domestic" .
 
 tag:EconCycle a brick:Tag ;
     rdfs:label "EconCycle" .
+
+tag:Frequency a brick:Tag ;
+    rdfs:label "Frequency" .
+
+tag:Heat a brick:Tag ;
+    rdfs:label "Heat" .
 
 tag:Heater a brick:Tag ;
     rdfs:label "Heater" .
@@ -2114,6 +2425,9 @@ tag:Overridden a brick:Tag ;
 tag:Plate a brick:Tag ;
     rdfs:label "Plate" .
 
+tag:Radon a brick:Tag ;
+    rdfs:label "Radon" .
+
 tag:Reversing a brick:Tag ;
     rdfs:label "Reversing" .
 
@@ -2132,6 +2446,9 @@ tag:Unoccupied a brick:Tag ;
 tag:Velocity a brick:Tag ;
     rdfs:label "Velocity" .
 
+tag:Virus a brick:Tag ;
+    rdfs:label "Virus" .
+
 switch:Chilled_Beam a owl:Class ;
     rdfs:label "Chilled Beam" ;
     rdfs:subClassOf brick:Terminal_Unit ;
@@ -2145,6 +2462,13 @@ switch:Count_Status a owl:Class ;
     skos:definition "" ;
     brick:hasAssociatedTag tag:Count,
         tag:Status .
+
+switch:Heat_Pump a owl:Class ;
+    rdfs:label "Heat Pump" ;
+    rdfs:subClassOf brick:HVAC_Equipment ;
+    skos:definition "" ;
+    brick:hasAssociatedTag tag:Heat,
+        tag:Pump .
 
 switch:Position_Status a owl:Class ;
     rdfs:label "Position Status" ;
@@ -2160,15 +2484,28 @@ switch:Request_Status a owl:Class ;
     brick:hasAssociatedTag tag:Request,
         tag:Status .
 
+switch:Vertical_Transport a owl:Class ;
+    rdfs:label "Vertical Transport" ;
+    rdfs:subClassOf brick:Equipment ;
+    skos:definition "" ;
+    brick:hasAssociatedTag tag:Transport,
+        tag:Vertical .
+
+switch:Zone_Sensor_Equipment a owl:Class ;
+    rdfs:label "Zone Sensor" ;
+    rdfs:subClassOf brick:Equipment ;
+    skos:definition "Independent sensors that do not belong to a typically equipment entity. Typically stand-alone or third-party sensors." ;
+    brick:hasAssociatedTag tag:Equipment,
+        tag:Sensor,
+        tag:Zone .
+
 switch:hasExternalProperty a owl:AsymmetricProperty,
         owl:IrreflexiveProperty,
         owl:ObjectProperty ;
     skos:definition "The subject has some link to data on another system" .
 
-switch:hasTagCollection a owl:AsymmetricProperty,
-        owl:IrreflexiveProperty,
-        owl:ObjectProperty ;
-    skos:definition "A collection holding Tag-tag value (k-v) pairs representing free form tags on entities" .
+tag:Cold a brick:Tag ;
+    rdfs:label "Cold" .
 
 tag:Count a brick:Tag ;
     rdfs:label "Count" .
@@ -2179,6 +2516,15 @@ tag:DHW a brick:Tag ;
 tag:Dehumidification a brick:Tag ;
     rdfs:label "Dehumidification" .
 
+tag:Enthalpy a brick:Tag ;
+    rdfs:label "Enthalpy" .
+
+tag:Equipment a brick:Tag ;
+    rdfs:label "Equipment" .
+
+tag:Level a brick:Tag ;
+    rdfs:label "Level" .
+
 tag:Low a brick:Tag ;
     rdfs:label "Low" .
 
@@ -2187,6 +2533,9 @@ tag:Mode a brick:Tag ;
 
 tag:Occupied a brick:Tag ;
     rdfs:label "Occupied" .
+
+tag:Parameter a brick:Tag ;
+    rdfs:label "Parameter" .
 
 tag:Request a brick:Tag ;
     rdfs:label "Request" .
@@ -2206,6 +2555,9 @@ tag:Beam a brick:Tag ;
 
 tag:Bypass a brick:Tag ;
     rdfs:label "Bypass" .
+
+tag:CO2 a brick:Tag ;
+    rdfs:label "CO2" .
 
 tag:Current a brick:Tag ;
     rdfs:label "Current" .
@@ -2251,14 +2603,41 @@ tag:Active a brick:Tag ;
 tag:Evaporator a brick:Tag ;
     rdfs:label "Evaporator" .
 
+tag:Filter a brick:Tag ;
+    rdfs:label "Filter" .
+
+tag:Limit a brick:Tag ;
+    rdfs:label "Limit" .
+
 tag:Min a brick:Tag ;
     rdfs:label "Min" .
 
-tag:Exhaust a brick:Tag ;
-    rdfs:label "Exhaust" .
+tag:Oil a brick:Tag ;
+    rdfs:label "Oil" .
+
+tag:Power a brick:Tag ;
+    rdfs:label "Power" .
+
+tag:Alarm a brick:Tag ;
+    rdfs:label "Alarm" .
+
+tag:Compressor a brick:Tag ;
+    rdfs:label "Compressor" .
+
+tag:Humidity a brick:Tag ;
+    rdfs:label "Humidity" .
 
 tag:Load a brick:Tag ;
     rdfs:label "Load" .
+
+tag:System a brick:Tag ;
+    rdfs:label "System" .
+
+tag:Pump a brick:Tag ;
+    rdfs:label "Pump" .
+
+tag:Voltage a brick:Tag ;
+    rdfs:label "Voltage" .
 
 tag:Call a brick:Tag ;
     rdfs:label "Call" .
@@ -2269,14 +2648,29 @@ tag:Differential a brick:Tag ;
 tag:Enable a brick:Tag ;
     rdfs:label "Enable" .
 
+tag:Flow a brick:Tag ;
+    rdfs:label "Flow" .
+
 tag:Entering a brick:Tag ;
     rdfs:label "Entering" .
+
+tag:Exhaust a brick:Tag ;
+    rdfs:label "Exhaust" .
+
+tag:VFD a brick:Tag ;
+    rdfs:label "VFD" .
 
 tag:Heating a brick:Tag ;
     rdfs:label "Heating" .
 
+tag:Outside a brick:Tag ;
+    rdfs:label "Outside" .
+
 tag:Phase a brick:Tag ;
     rdfs:label "Phase" .
+
+tag:Pressure a brick:Tag ;
+    rdfs:label "Pressure" .
 
 tag:Cooling a brick:Tag ;
     rdfs:label "Cooling" .
@@ -2286,6 +2680,12 @@ tag:Isolation a brick:Tag ;
 
 tag:Refrigerant a brick:Tag ;
     rdfs:label "Refrigerant" .
+
+tag:Speed a brick:Tag ;
+    rdfs:label "Speed" .
+
+tag:Damper a brick:Tag ;
+    rdfs:label "Damper" .
 
 tag:Discharge a brick:Tag ;
     rdfs:label "Discharge" .
@@ -2301,4 +2701,40 @@ tag:Off a brick:Tag ;
 
 tag:On a brick:Tag ;
     rdfs:label "On" .
+
+tag:Condenser a brick:Tag ;
+    rdfs:label "Condenser" .
+
+tag:Zone a brick:Tag ;
+    rdfs:label "Zone" .
+
+tag:Fan a brick:Tag ;
+    rdfs:label "Fan" .
+
+tag:Valve a brick:Tag ;
+    rdfs:label "Valve" .
+
+tag:Command a brick:Tag ;
+    rdfs:label "Command" .
+
+tag:Setpoint a brick:Tag ;
+    rdfs:label "Setpoint" .
+
+tag:Temperature a brick:Tag ;
+    rdfs:label "Temperature" .
+
+tag:Position a brick:Tag ;
+    rdfs:label "Position" .
+
+tag:Status a brick:Tag ;
+    rdfs:label "Status" .
+
+tag:Water a brick:Tag ;
+    rdfs:label "Water" .
+
+tag:Air a brick:Tag ;
+    rdfs:label "Air" .
+
+tag:Sensor a brick:Tag ;
+    rdfs:label "Sensor" .
 
