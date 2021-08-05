@@ -22,6 +22,7 @@ class Graph(rdflib.Graph):
             'switch_version': switch_version
         }
         self._building = {}
+        self._namespaces = {}
         super().__init__()
 
         if load_brick:
@@ -40,6 +41,9 @@ class Graph(rdflib.Graph):
             # wrap in StringIO to make it file-like
             self.parse(source=io.StringIO(data), format="turtle")
 
+        self.generate_namespaces()
+
+    def generate_namespaces(self):
         # generate callable Namespace objects from Graph
         namespaceURIs = dict(self.namespaces())
         # create namespace objects to make querying easier
