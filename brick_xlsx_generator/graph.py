@@ -16,7 +16,7 @@ logger.setLevel(logging.INFO)
 
 
 class Graph(rdflib.Graph):
-    def __init__(self, load_brick: bool = True, load_switch: bool = True, brick_version: str = "1.2", switch_version: str = "1.0"):
+    def __init__(self, load_brick: bool = True, load_switch: bool = True, brick_version: str = "1.2", switch_version: str = "1.1"):
         self._ontology_versions = {
             'brick_version': brick_version,
             'switch_version': switch_version
