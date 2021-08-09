@@ -136,11 +136,12 @@ class Graph(rdflib.Graph):
         logger.info("Entities successfully added to model.")
         logger.info("Processing complete.")
 
-    def export(self, export_mode: str = "full", export_path: str = os.path.join(os.getcwd(), "output")):
+    def export(self, export_mode: str = "full", export_path: str = os.path.join(os.getcwd(), "output"), timestamp: bool = True):
         """
         Serialises a graph model to a TTL file and saves to given path
         Can generate a full, building entity only, or building equipment only model.
 
+        :param timestamp: bool. Flag to include timestamp in filename for uniqueness
         :param export_path: dir to save ttl file. Defaults to CWD/output.
         :param export_mode: options = ["full", "building", "equipment_locations_systems"]
         :return:
@@ -150,8 +151,11 @@ class Graph(rdflib.Graph):
             os.mkdir(export_path)
 
         # GENERATE TIMESTAMP FOR FILENAMES
-        now = datetime.now()
-        timestamp_str = now.strftime("%Y%m%d_%H%M%S")
+        if timestamp:
+            now = datetime.now()
+            timestamp_str = now.strftime("%Y%m%d_%H%M%S")
+        else:
+            timestamp_str = "Export"
 
         if export_mode == "full":
             logger.info("Exporting full brick model...")
