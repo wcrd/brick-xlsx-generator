@@ -1,12 +1,10 @@
 # XLSX Brick Model Generator
 
 ## Installation
-Until this package is published the easiest way to use it is to clone this package and work from a local file within the package root.
+Create a new environment and install from github:
 
  ```
- brick-xlsx-generator
- |- brick_xlsx_generator
- |- my_file.py    <- your working file
+ poetry add git+https://github.com/wcrd/brick-xlsx-generator.git@main
  ```
  In your working file simply import the package
 
@@ -37,5 +35,12 @@ This will generate all brick relationships and process any SwitchTags provided.
 
 3. Export Model to TTL
 ```python
-g.export()
+g.export(export_mode="full")  # export_mode is optional
 ```
+Export options available are:
+* _full_: export everything
+* _building_: export only building entities
+* _equipment_locations_systems_: export only building entities and exclude points
+
+## References
+Parts of this code are based on code provided by the py-brickschema package.
