@@ -4,6 +4,7 @@ Created on Sun Sep  6 10:11:10 2020
 
 @author: WillDavidson
 """
+
 from rdflib.plugins.sparql import prepareQuery
 
 
@@ -22,7 +23,7 @@ def query_all_triples_in_namespace():
             ?s ?p ?o
         }
         WHERE { 
-            ?s ?p ?o
+            ?s ?p ?o .
             FILTER (isURI(?s) && STRSTARTS(str(?s), str(?namespace) ) )
         }
         """
