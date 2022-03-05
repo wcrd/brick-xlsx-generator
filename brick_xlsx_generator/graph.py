@@ -5,6 +5,7 @@ import pkgutil
 import io
 import pandas as pd
 from datetime import datetime
+import sys
 from .relationships import (
     BRICK_RELATIONSHIPS,
     SWITCH_RELATIONSHIPS
@@ -60,7 +61,7 @@ class Graph(rdflib.Graph):
     def process(self, path_to_xlsx: str, portfolio_name: str = "example", building_name: str = "example_building"):
         if not os.path.isfile(path_to_xlsx):
             logger.error(f"File not found at specified path: {path_to_xlsx}")
-            return
+            sys.exit('Error: Input file not found')
 
         logger.info("Loading file...")
         # load sheets for: Locations, Equipment, Points
