@@ -9,20 +9,6 @@ SWITCH_RELATIONSHIPS = [
     Rel("hasIntegrationId", "Literal", "switch"),
     Rel("hasPointName", "Literal", "switch"),
     Rel("hasDisplayName", "Literal", "switch")
-    # Rel("hasLocationUuid", "Literal", "switch"),
-    # Rel("locationLabel", "Literal", "switch"),
-    # Rel("locationType", "Literal", "switch"),
-    # Rel("locationDisplayName", "Literal", "switch"),
-    # Rel("locationNumber", "Literal", "switch"),
-    # Rel("locationDescription", "Literal", "switch"),
-    # Rel("floorNum", "Literal", "switch"),
-    # Rel("hasEquipmentUuid", "Literal", "switch"),
-    # Rel("equipmentLabel", "Literal", "switch"),
-    # Rel("equipmentType", "Literal", "switch"),
-    # Rel("equipmentDisplayName", "Literal", "switch"),
-    # Rel("hasSensorUuid", "Literal", "switch"),
-    # Rel("pointName", "Literal", "switch"),
-    # Rel("sensorDisplayName", "Literal", "switch"),
 ]
 
 # Brick Relationships of interest (relationships, datatype (if not reference), namespace (if not brick))
