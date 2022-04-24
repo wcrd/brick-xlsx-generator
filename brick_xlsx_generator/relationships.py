@@ -5,7 +5,10 @@ Rel = namedtuple("Rel", ['name', 'datatype', 'namespace'])
 
 # Switch Relationships of interest
 SWITCH_RELATIONSHIPS = [
-    Rel("hasObjectPropertyId", "Literal", "switch")
+    Rel("hasObjectPropertyId", "Literal", "switch"),
+    Rel("hasIntegrationId", "Literal", "switch"),
+    Rel("hasPointName", "Literal", "switch"),
+    Rel("hasDisplayName", "Literal", "switch")
     # Rel("hasLocationUuid", "Literal", "switch"),
     # Rel("locationLabel", "Literal", "switch"),
     # Rel("locationType", "Literal", "switch"),

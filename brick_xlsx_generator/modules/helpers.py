@@ -1,3 +1,8 @@
+import logging
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
 # Validate URIs
 # TODO: Is there an official way to do this??
 # RDF does not like whitespace or "/" in the URI fragment
@@ -30,3 +35,16 @@ def validate_relationships(df_headers, relationships_to_process):
             print(f"Input df does not have relationship: {relationship} defined.")
     
     return relationships
+
+# Check column in dataframe
+def column_exists(df_headers, column_name):
+    return column_name in df_headers
+
+# return first matched id by custom_field in dataframe map
+# df_map must have columns subject, custom
+def lookupValue(df_map, custom_value:str):
+    try: 
+        return df_map.loc[df_map.custom == custom_value]['subject'].values[0]
+    except:
+        logger.warning(f"Id not found for referenced entity: {custom_value}. Skipping.")
+        return None

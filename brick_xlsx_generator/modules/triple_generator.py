@@ -1,10 +1,17 @@
 import rdflib
 from rdflib.collection import Collection
+import logging
 from . import helpers
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 
 # Create rdf triples from input dataframes
-def process_df(df, namespaces:dict, multiIndexHeader:str, relationships_to_process:list):
+def process_df(df, namespaces:dict, multiIndexHeader:str, relationships_to_process:list, relationship_field:tuple, df_map):
+    '''
+    :relationship_field: column that is referenced by the relationships fields. Typically 'identifier', but 'label' is also widely used.
+    '''
     print(f"Processing {multiIndexHeader} relationships.")
     triples = []
 
@@ -18,8 +25,13 @@ def process_df(df, namespaces:dict, multiIndexHeader:str, relationships_to_proce
     
     # validate input df has a valid identifier column (this is used for entity definition).
     # Df must have this column
-    if helpers.validate_relationships(df['Brick'].columns, [("identifier", "Literal", "")]) == []:
-        print("No valid identifier column found. Aborting.")
+    # PRIOR METHOD
+    # if helpers.validate_relationships(df['Brick'].columns, [("identifier", "Literal", "")]) == []:
+    #     print("No valid identifier column found. Aborting.")
+    #     return triples
+    # NEW METHOD
+    if not helpers.column_exists(df.columns, relationship_field):
+        logger.error("No valid identifier column found. Aborting.")
         return triples
 
     # validate input df has all relationships
@@ -47,6 +59,12 @@ def process_df(df, namespaces:dict, multiIndexHeader:str, relationships_to_proce
             data = row[multiIndexHeader][relationship.name]
             if data == 0 or data == "" or not data: continue
             data = [x.strip() for x in data.split("|")]
+
+            # convert to ids using the df_map; remove unknown items. Only for references.
+            if relationship.datatype == "ref":
+                data = [ helpers.lookupValue(df_map, item) for item in data ]
+                data = list(filter(None, data))
+
 
             if relationship.datatype == "Literal":
                 for item in data:
