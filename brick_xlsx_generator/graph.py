@@ -17,7 +17,7 @@ logger.setLevel(logging.INFO)
 
 
 class Graph(rdflib.Graph):
-    def __init__(self, load_brick: bool = True, load_switch: bool = True, brick_version: str = "1.2", switch_version: str = "1.1"):
+    def __init__(self, load_brick: bool = True, load_switch: bool = True, brick_version: str = "1.2", switch_version: str = "1.1.4"):
         self._ontology_versions = {
             'brick_version': brick_version,
             'switch_version': switch_version
@@ -58,7 +58,7 @@ class Graph(rdflib.Graph):
         else:
             logger.error(f"File not found at specified path: {path_to_ontology}")
 
-    def process(self, path_to_xlsx: str, portfolio_name: str = "example", building_name: str = "example_building"):
+    def process(self, path_to_xlsx: str, portfolio_name: str = "example", building_name: str = "example_building", relationship_field:tuple = ("Brick", "identifier")):
         if not os.path.isfile(path_to_xlsx):
             logger.error(f"File not found at specified path: {path_to_xlsx}")
             sys.exit('Error: Input file not found')
@@ -69,6 +69,11 @@ class Graph(rdflib.Graph):
         df_locations = pd.read_excel(xlFile, sheet_name="locations", header=[0, 1], dtype=str)
         df_equipment = pd.read_excel(xlFile, sheet_name="equipment", header=[0, 1], dtype=str)
         df_points = pd.read_excel(xlFile, sheet_name="points", header=[0, 1], dtype=str)
+
+        df_locations.name = "locations"
+        df_equipment.name = "equipment"
+        df_points.name = "points"
+
 
         # tidy dfs
         logger.info("Clearing nulls.")
@@ -99,17 +104,40 @@ class Graph(rdflib.Graph):
 
         # PROCESS EXCEL DATA & GENERATE TRIPLES
         logger.info("Processing Building Model data...")
+
+        # validate relationship column exists
+        logger.info(f"Relationships defined by referencing column: {relationship_field}. Validating column exists on all sheets...")
+        for df in [df_equipment, df_locations, df_points]:
+            if not helpers.column_exists(df, relationship_field):
+                logger.error(f"Model input sheet: {df.name} does not have column: {relationship_field} defined. Aborting.")
+                sys.exit("Error: valid reference column not found.")
+            else:
+                logger.info(f"OK. {df.name} reference column found.")
+        
+        # generate id<>relationship_field map (entites must be related via the identifier (subject) field in the rdf graph)
+        # if no custom relationship is provided this is not required.
+        logger.info(f"Generating {relationship_field}<>identifier entity lookup table... ")
+        df_map = pd.DataFrame(columns=['subject', 'custom'])
+        for df in [df_equipment, df_locations]:
+            df_temp = df[[("Brick", "identifier"), relationship_field]]
+            df_temp.columns = ['subject', 'custom']
+            df_map = df_map.append(df_temp) # this does not consider dups. They should be identified using the validation package.
+        self._df_map = df_map
+        logger.info("Successfully generated.")
+        # df_map.to_csv("./_debug.csv")
+        # return
+
         logger.info("Processing Locations...")
-        triples_locations = tg.process_df(df_locations, self._namespaces, "Brick", BRICK_RELATIONSHIPS)
-        triples_locations.extend(tg.process_df(df_locations, self._namespaces, "Switch", SWITCH_RELATIONSHIPS))
+        triples_locations = tg.process_df(df_locations, self._namespaces, "Brick", BRICK_RELATIONSHIPS, relationship_field, self._df_map)
+        triples_locations.extend(tg.process_df(df_locations, self._namespaces, "Switch", SWITCH_RELATIONSHIPS, relationship_field, self._df_map))
 
         logger.info("Processing Equipment...")
-        triples_equipment = tg.process_df(df_equipment, self._namespaces, "Brick", BRICK_RELATIONSHIPS)
-        triples_equipment.extend(tg.process_df(df_equipment, self._namespaces, "Switch", SWITCH_RELATIONSHIPS))
+        triples_equipment = tg.process_df(df_equipment, self._namespaces, "Brick", BRICK_RELATIONSHIPS, relationship_field, self._df_map)
+        triples_equipment.extend(tg.process_df(df_equipment, self._namespaces, "Switch", SWITCH_RELATIONSHIPS, relationship_field, self._df_map))
 
         logger.info("Processing Points...")
-        triples_points = tg.process_df(df_points, self._namespaces, "Brick", BRICK_RELATIONSHIPS)
-        triples_points.extend(tg.process_df(df_points, self._namespaces, "Switch", SWITCH_RELATIONSHIPS))
+        triples_points = tg.process_df(df_points, self._namespaces, "Brick", BRICK_RELATIONSHIPS, relationship_field, self._df_map)
+        triples_points.extend(tg.process_df(df_points, self._namespaces, "Switch", SWITCH_RELATIONSHIPS, relationship_field, self._df_map))
         logger.info("Building model data successfully processed.")
 
         # ADD TRIPLES TO GRAPH
