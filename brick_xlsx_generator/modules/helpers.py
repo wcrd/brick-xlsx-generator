@@ -1,3 +1,4 @@
+import pandas as pd
 import logging
 
 logger = logging.getLogger(__name__)
@@ -48,3 +49,34 @@ def lookupValue(df_map, custom_value:str):
     except:
         logger.warning(f"Id not found for referenced entity: {custom_value}. Skipping.")
         return None
+
+
+
+##########
+#   FILE HELPERS
+##########
+
+def import_model_template_file(path_to_xlsx):
+    # load sheets for: Locations, Equipment, Points
+    xlFile = pd.ExcelFile(path_to_xlsx)
+    df_locations = pd.read_excel(xlFile, sheet_name="locations", header=[0, 1], dtype=str)
+    df_equipment = pd.read_excel(xlFile, sheet_name="equipment", header=[0, 1], dtype=str)
+    df_points = pd.read_excel(xlFile, sheet_name="points", header=[0, 1], dtype=str)
+
+    # Name the dataframes (for use later)
+    df_locations.name = "locations"
+    df_equipment.name = "equipment"
+    df_points.name = "points"
+
+
+    # tidy dfs
+    logger.info("Clearing nulls.")
+    df_locations.fillna(0, inplace=True)
+    df_equipment.fillna(0, inplace=True)
+    df_points.fillna(0, inplace=True)
+    logger.info("Removing non-valid chars.")
+    df_locations.replace({u'\xa0': u' '}, regex=True, inplace=True)
+    df_equipment.replace({u'\xa0': u' '}, regex=True, inplace=True)
+    df_points.replace({u'\xa0': u' '}, regex=True, inplace=True)
+
+    return df_equipment, df_locations, df_points

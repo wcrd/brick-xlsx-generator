@@ -27,6 +27,6 @@ BRICK_RELATIONSHIPS = [
     Rel("hasPoint", "ref", "brick"),
     Rel("meters", "ref", "brick"),          # V1.3
     Rel("isMeteredBy", "ref", "brick"),     # V1.3
-    Rel("hasSubmeter", "ref", "brick"),     # V1.3
-    Rel("isSubmeterOf", "ref", "brick")     # V1.3
+    Rel("hasSubMeter", "ref", "brick"),     # V1.3
+    Rel("isSubMeterOf", "ref", "brick")     # V1.3
 ]
