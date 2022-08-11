@@ -8,7 +8,9 @@ SWITCH_RELATIONSHIPS = [
     Rel("hasObjectPropertyId", "Literal", "switch"),
     Rel("hasIntegrationId", "Literal", "switch"),
     Rel("hasPointName", "Literal", "switch"),
-    Rel("hasDisplayName", "Literal", "switch")
+    Rel("hasDisplayName", "Literal", "switch"),
+    Rel("monitors", "ref", "switch"),
+    Rel("isMonitoredBy", "ref", "switch")
 ]
 
 # Brick Relationships of interest (relationships, datatype (if not reference), namespace (if not brick))
