@@ -33,7 +33,7 @@ def query_all_triples_in_namespace():
 
 def generate_inverse_relationships():
     """
-    Generate all valid inverse relationships for a given graph
+    Generate all valid inverse relationships for entire default graph and write to default
     """
     queryBody = \
         """
@@ -42,6 +42,32 @@ def generate_inverse_relationships():
         } WHERE {
             ?s ?prop ?o .
             ?prop owl:inverseOf ?invprop
+        }
+        """
+    return queryBody
+
+
+def generate_inverse_relationships_for_graph():
+    """
+    Generate all valid inverse relationships for the named graph and write to named graph. If graph name not provided inverses will be generated for and written to the default graph.
+
+    :PARAMS:
+    g_identifier: rdflib.URI
+        * provide a valid URI for the graph identifier to process
+    """
+
+    queryBody = \
+        """
+        INSERT {
+            GRAPH ?g {
+                ?o ?invprop ?s .
+            }
+        }
+        WHERE {
+            GRAPH ?g {
+                ?s ?prop ?o .
+            }
+            ?prop owl:inverseOf ?invprop .
         }
         """
     return queryBody
