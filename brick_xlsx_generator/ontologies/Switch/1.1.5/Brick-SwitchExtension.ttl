@@ -2170,16 +2170,6 @@ switch:hasTagCollection a owl:AsymmetricProperty,
         owl:ObjectProperty ;
     skos:definition "A collection holding Tag-tag value (k-v) pairs representing free form tags on entities" .
 
-switch:isMonitoredBy a owl:AsymmetricProperty,
-        owl:IrreflexiveProperty,
-        owl:ObjectProperty ;
-    skos:definition "The subject is monitored by another entity. E.g. a 'Camera' monitors an area/entity; an 'Occupancy Sensor' can monitor a 'Desk'; etc" .
-
-switch:monitors a owl:AsymmetricProperty,
-        owl:IrreflexiveProperty,
-        owl:ObjectProperty ;
-    skos:definition "The subject observes/measures some property on another entity. E.g. a 'Camera' monitors an area/entity; an 'Occupancy Sensor' can monitor a 'Desk'; etc" .
-
 tag:AB a brick:Tag ;
     rdfs:label "AB" .
 
@@ -2540,6 +2530,18 @@ switch:Water_Source_Heat_Pump a owl:Class ;
         tag:Pump,
         tag:Source,
         tag:Water .
+
+switch:isMonitoredBy a owl:AsymmetricProperty,
+        owl:IrreflexiveProperty,
+        owl:ObjectProperty ;
+    owl:inverseOf switch:monitors ;
+    skos:definition "The subject is monitored by another entity. E.g. a 'Camera' monitors an area/entity; an 'Occupancy Sensor' can monitor a 'Desk'; etc" .
+
+switch:monitors a owl:AsymmetricProperty,
+        owl:IrreflexiveProperty,
+        owl:ObjectProperty ;
+    owl:inverseOf switch:isMonitoredBy ;
+    skos:definition "The subject observes/measures some property on another entity. E.g. a 'Camera' monitors an area/entity; an 'Occupancy Sensor' can monitor a 'Desk'; etc" .
 
 tag:A a brick:Tag ;
     rdfs:label "A" .
