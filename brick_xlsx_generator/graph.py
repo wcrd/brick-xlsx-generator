@@ -259,7 +259,10 @@ class Dataset(rdflib.Dataset):
         logger.info(f"{len(triples_points)} point triples added.")
 
         logger.info("Generating inverse relationships...")
-        g.update(sq.generate_inverse_relationships())
+        # need to look at the whole graph to generate inverses as we need the ontology files
+        # TODO: This isn't going to work. We need to do inverses just for building, and write them to the building.
+        # self.update(sq.generate_inverse_relationships())
+        self.update(sq.generate_inverse_relationships_for_graph(), initBindings={"g": g.identifier})
 
         # Process Extensions
         logger.info("Processing model extensions.")
