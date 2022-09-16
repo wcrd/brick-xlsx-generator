@@ -17,7 +17,7 @@ from .modules import helpers, triple_generator as tg, sparql_queries as sq
 from typing import TypedDict
 
 class CustomOntology(TypedDict):
-    graph: rdflib.Graph
+    ttl_path: str
     name: str
 
 logger = logging.getLogger(__name__)
@@ -360,13 +360,13 @@ class Graph(rdflib.Graph):
         custom_graph: expects a dict of shape { graph: rdflib.Graph, name: string }. The name is used for namespacing the graph depending on store type. It is not used in this class.
 
         """
+        super().__init__()
         self._ontology_versions = {
             'brick_version': brick_version,
             'switch_version': switch_version
         }
         self._building = {}
         self._namespaces = {}
-        super().__init__()
 
         if load_brick:
             # get ontology data from package
@@ -394,7 +394,7 @@ class Graph(rdflib.Graph):
         
         # load custom graph if exists
         if custom_graph:
-            self = self + custom_graph['graph']
+            self.parse(custom_graph['ttl_path'], format="turtle")
 
         self.generate_namespaces()
 
@@ -403,6 +403,7 @@ class Graph(rdflib.Graph):
         namespaceURIs = dict(self.namespaces())
         # create namespace objects to make querying easier
         self._namespaces = {name: rdflib.Namespace(URI) for name, URI in namespaceURIs.items()}
+        
 
     def load_ontology(self, ontology_name: str, ontology_version: str, path_to_ontology: str):
         # get ontology data from path
@@ -443,6 +444,7 @@ class Graph(rdflib.Graph):
 
         # NAMESPACES
         logger.info("Generating building namespace...")
+        print(self._namespaces)
         BUILDING = rdflib.Namespace(f"https://{portfolio_name}.com/{building_name}#")
         self._namespaces['building'] = BUILDING
         self.bind('building', BUILDING)
@@ -455,6 +457,7 @@ class Graph(rdflib.Graph):
             'building': building_name
         }
         logger.info("Namespace generation complete.")
+        print(self._namespaces)
 
         # PROCESS EXCEL DATA & GENERATE TRIPLES
         logger.info("Processing Building Model data...")
