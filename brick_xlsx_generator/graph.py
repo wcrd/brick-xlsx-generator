@@ -14,6 +14,12 @@ from .relationships import (
 )
 from .modules import helpers, triple_generator as tg, sparql_queries as sq
 
+from typing import TypedDict
+
+class CustomOntology(TypedDict):
+    graph: rdflib.Graph
+    name: str
+
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
@@ -333,7 +339,27 @@ class Dataset(rdflib.Dataset):
 
 # Original all-in-one single graph method.
 class Graph(rdflib.Graph):
-    def __init__(self, load_brick: bool = True, load_switch: bool = True, brick_version: str = "1.2", switch_version: str = "1.1.5"):
+    def __init__(
+        self, 
+        load_brick: bool = True, 
+        load_switch: bool = True, 
+        brick_version: str = "1.2", 
+        switch_version: str = "1.1.7", 
+        path_to_local_brick: str = None, 
+        path_to_local_switch: str = None, 
+        custom_graph: CustomOntology = None
+        ):
+        """
+        @params:
+        load_brick: True; whether to load Brick into the final graph. Recommended as is required for populating inverses, etc.
+                    Set this to False if you want to load a local version of Brick via the 'path_to_local_brick' parameter.    
+        load_switch: True; whether to load Switch into the final graph. Recommended as is required for populating inverses, etc.
+                    Set this to False if you want to load a local version of Switch via the 'path_to_local_switch' parameter.
+        path_to_local_brick: Absolute path to local TTL to use as the Brick ontology. Only evaluated if load_brick=False
+        path_to_local_switch: Absolute path to local TTL to use as the Switch ontology. Only evaluated if load_switch=False
+        custom_graph: expects a dict of shape { graph: rdflib.Graph, name: string }. The name is used for namespacing the graph depending on store type. It is not used in this class.
+
+        """
         self._ontology_versions = {
             'brick_version': brick_version,
             'switch_version': switch_version
@@ -349,6 +375,10 @@ class Graph(rdflib.Graph):
             ).decode()
             # wrap in StringIO to make it file-like
             self.parse(source=io.StringIO(data), format="turtle")
+        else:
+            # check for local brick path
+            if path_to_local_brick:
+                self.parse(path_to_local_brick, format="turtle")
 
         if load_switch:
             # get ontology data from package
@@ -357,6 +387,14 @@ class Graph(rdflib.Graph):
             ).decode()
             # wrap in StringIO to make it file-like
             self.parse(source=io.StringIO(data), format="turtle")
+        else:
+            # check for local switch path
+            if path_to_local_switch:
+                self.parse(path_to_local_switch, format="turtle")
+        
+        # load custom graph if exists
+        if custom_graph:
+            self = self + custom_graph['graph']
 
         self.generate_namespaces()
 
