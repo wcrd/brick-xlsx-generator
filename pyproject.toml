@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "brick-xlsx-generator"
-version = "0.2.1"
+version = "0.2.2"
 description = "Generate Brick models from xlsx files. Supports custom namespaces and extensions."
 authors = ["wcrd <11898748+wcrd@users.noreply.github.com>"]
 license = "MIT"

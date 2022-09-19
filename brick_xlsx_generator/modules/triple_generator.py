@@ -1,3 +1,4 @@
+from argparse import ArgumentError
 import rdflib
 from rdflib.collection import Collection
 import logging
@@ -45,12 +46,16 @@ def process_df(df, namespaces:dict, multiIndexHeader:str, relationships_to_proce
         entity_class = helpers.format_fragment(row['Brick']['class'])
 
         # define entity
-        if entity_class == 0:
-            continue
-        elif "switch:" in entity_class:
-            triples.append((namespaces['building'][identifier], rdflib.RDF.type, namespaces['switch'][entity_class.replace("switch:", "")]))
-        else:
-            triples.append((namespaces['building'][identifier], rdflib.RDF.type, namespaces['brick'][entity_class]))
+        try:
+            if entity_class == 0:
+                continue
+            elif "switch:" in entity_class:
+                triples.append((namespaces['building'][identifier], rdflib.RDF.type, namespaces['switch'][entity_class.replace("switch:", "")]))
+            else:
+                triples.append((namespaces['building'][identifier], rdflib.RDF.type, namespaces['brick'][entity_class]))
+        except:
+            print(identifier, entity_class, namespaces)
+            raise Exception("DEBUG ->> Error in making triples.")
 
         # create relationships
         for relationship in relationships:
