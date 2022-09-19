@@ -29,12 +29,22 @@ def validate_relationships(df_headers, relationships_to_process):
     Returns: List of valid relationship tuples for given dataframe
     """
     relationships = []
+    non_defined_relationships = []
     for relationship in relationships_to_process:
         if relationship[0] in df_headers:
             relationships.append(relationship)
         else:
-            print(f"Input df does not have relationship: {relationship} defined.")
+            # print(f"Input df does not have relationship: {relationship} defined.")
+            non_defined_relationships.append(relationship)
     
+    # logging
+    if len(relationships) == 0:
+        logger.info("No relationships found in input file.")
+    else:
+        logger.info("The following relationships were found in the input file:")
+        for rel in relationships:
+            logger.info(f"\t{rel}")
+
     return relationships
 
 # Check column in dataframe

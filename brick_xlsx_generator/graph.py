@@ -1,3 +1,4 @@
+from argparse import ArgumentError
 import rdflib
 from rdflib.plugins.stores.memory import Memory
 from rdflib.plugins import sparql
@@ -143,9 +144,23 @@ class Dataset(rdflib.Dataset):
             load_switch: bool = True, 
             brick_version: str = "1.2", 
             switch_version: str = "1.1.5",
+            path_to_local_brick: str = None, 
+            path_to_local_switch: str = None, 
+            custom_graph: CustomOntology = None,
             store=Memory(), 
             sparql_load_graphs=False
         ):
+        """
+        @params:
+        load_brick: True; whether to load Brick into the final graph. Recommended as is required for populating inverses, etc.
+                    Set this to False if you want to load a local version of Brick via the 'path_to_local_brick' parameter.    
+        load_switch: True; whether to load Switch into the final graph. Recommended as is required for populating inverses, etc.
+                    Set this to False if you want to load a local version of Switch via the 'path_to_local_switch' parameter.
+        path_to_local_brick: Absolute path to local TTL to use as the Brick ontology. Only evaluated if load_brick=False
+        path_to_local_switch: Absolute path to local TTL to use as the Switch ontology. Only evaluated if load_switch=False
+        custom_graph: expects a dict of shape { graph: rdflib.Graph, name: string }. The name is used for namespacing the graph depending on store type. It is not used in this class.
+
+        """
         self._ontology_versions = {
             'brick_version': brick_version,
             'switch_version': switch_version
@@ -168,6 +183,10 @@ class Dataset(rdflib.Dataset):
             ).decode()
             # wrap in StringIO to make it file-like
             self.graph(self._graph_namespace['brick']).parse(source=io.StringIO(data), format="turtle")
+        else:
+            # check for local brick path
+            if path_to_local_brick:
+                self.graph(self._graph_namespace['brick']).parse(path_to_local_brick, format="turtle")
 
         if load_switch:
             # get ontology data from package
@@ -176,7 +195,19 @@ class Dataset(rdflib.Dataset):
             ).decode()
             # wrap in StringIO to make it file-like
             self.graph(self._graph_namespace['switch']).parse(source=io.StringIO(data), format="turtle")
+        else:
+            # check for local switch path
+            if path_to_local_switch:
+                self.graph(self._graph_namespace['switch']).parse(path_to_local_switch, format="turtle")
 
+        # load custom graph if exists
+        if custom_graph:
+            # names: brick, switch are reserved
+            _reserved_names = ['brick', 'switch']
+            if custom_graph['name'] in _reserved_names:
+                raise ArgumentError(None, f"Custom graph name is not allowed. The following names are restricted: {_reserved_names}")
+            self.parse(custom_graph['ttl_path'], format="turtle")
+        
         self.generate_namespaces()
 
     def generate_namespaces(self):
